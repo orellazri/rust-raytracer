@@ -1,25 +1,26 @@
+use crate::F;
 use std::ops;
 
-use crate::float::floats_equal;
+use crate::float::*;
 
 #[derive(Debug, Copy, Clone)]
 pub struct Tuple {
-    x: f32,
-    y: f32,
-    z: f32,
-    w: f32,
+    x: F,
+    y: F,
+    z: F,
+    w: F,
 }
 
 impl Tuple {
-    pub fn new(x: f32, y: f32, z: f32, w: f32) -> Self {
+    pub fn new(x: F, y: F, z: F, w: F) -> Self {
         Tuple { x, y, z, w }
     }
 
-    pub fn point(x: f32, y: f32, z: f32) -> Self {
+    pub fn point(x: F, y: F, z: F) -> Self {
         Tuple { x, y, z, w: 1.0 }
     }
 
-    pub fn vector(x: f32, y: f32, z: f32) -> Self {
+    pub fn vector(x: F, y: F, z: F) -> Self {
         Tuple { x, y, z, w: 0.0 }
     }
 
@@ -31,23 +32,23 @@ impl Tuple {
         self.w == 0.0
     }
 
-    pub fn x(&self) -> f32 {
+    pub fn x(&self) -> F {
         self.x
     }
 
-    pub fn y(&self) -> f32 {
+    pub fn y(&self) -> F {
         self.y
     }
 
-    pub fn z(&self) -> f32 {
+    pub fn z(&self) -> F {
         self.z
     }
 
-    pub fn w(&self) -> f32 {
+    pub fn w(&self) -> F {
         self.w
     }
 
-    pub fn magnitude(&self) -> f32 {
+    pub fn magnitude(&self) -> F {
         (self.x * self.x + self.y * self.y + self.z * self.z + self.w * self.w).sqrt()
     }
 
@@ -55,7 +56,7 @@ impl Tuple {
         *self / self.magnitude()
     }
 
-    pub fn dot(&self, rhs: Tuple) -> f32 {
+    pub fn dot(&self, rhs: Tuple) -> F {
         self.x * rhs.x + self.y * rhs.y + self.z * rhs.z + self.w * rhs.w
     }
 
@@ -111,18 +112,18 @@ impl ops::Neg for Tuple {
     }
 }
 
-impl ops::Mul<f32> for Tuple {
+impl ops::Mul<F> for Tuple {
     type Output = Tuple;
 
-    fn mul(self, rhs: f32) -> Tuple {
+    fn mul(self, rhs: F) -> Tuple {
         Tuple::new(self.x * rhs, self.y * rhs, self.z * rhs, self.w * rhs)
     }
 }
 
-impl ops::Div<f32> for Tuple {
+impl ops::Div<F> for Tuple {
     type Output = Tuple;
 
-    fn div(self, rhs: f32) -> Tuple {
+    fn div(self, rhs: F) -> Tuple {
         Tuple::new(self.x / rhs, self.y / rhs, self.z / rhs, self.w / rhs)
     }
 }
@@ -247,7 +248,7 @@ mod tests {
     #[test]
     fn magnitue_of_vector_1_2_3() {
         let tuple = Tuple::vector(1.0, 2.0, 3.0);
-        let result = (14.0 as f32).sqrt();
+        let result = (14.0 as F).sqrt();
         assert_eq!(tuple.magnitude(), result);
     }
 
