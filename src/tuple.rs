@@ -38,6 +38,18 @@ impl Tuple {
     pub fn normalized(&self) -> Tuple {
         *self / self.magnitude()
     }
+
+    pub fn dot(&self, rhs: Tuple) -> f32 {
+        self.x * rhs.x + self.y * rhs.y + self.z * rhs.z + self.w * rhs.w
+    }
+
+    pub fn cross(&self, rhs: Tuple) -> Tuple {
+        Tuple::vector(
+            self.y * rhs.z - self.z * rhs.y,
+            self.z * rhs.x - self.x * rhs.z,
+            self.x * rhs.y - self.y * rhs.x,
+        )
+    }
 }
 
 impl PartialEq for Tuple {
@@ -96,15 +108,6 @@ impl ops::Div<f32> for Tuple {
 
     fn div(self, rhs: f32) -> Tuple {
         Tuple::new(self.x / rhs, self.y / rhs, self.z / rhs, self.w / rhs)
-    }
-}
-
-// Dot product
-impl ops::Mul<Tuple> for Tuple {
-    type Output = f32;
-
-    fn mul(self, rhs: Tuple) -> f32 {
-        self.x * rhs.x + self.y * rhs.y + self.z * rhs.z + self.w * rhs.w
     }
 }
 
@@ -265,7 +268,17 @@ mod tests {
     fn dot_product_of_two_vectors() {
         let tuple1 = Tuple::vector(1.0, 2.0, 3.0);
         let tuple2 = Tuple::vector(2.0, 3.0, 4.0);
-        let result = floats_equal(tuple1 * tuple2, 20.0);
+        let result = floats_equal(tuple1.dot(tuple2), 20.0);
         assert_eq!(result, true);
+    }
+
+    #[test]
+    fn cross_product_of_two_vectors() {
+        let tuple1 = Tuple::vector(1.0, 2.0, 3.0);
+        let tuple2 = Tuple::vector(2.0, 3.0, 4.0);
+        let result1 = Tuple::vector(-1.0, 2.0, -1.0);
+        let result2 = Tuple::vector(1.0, -2.0, 1.0);
+        assert_eq!(tuple1.cross(tuple2), result1);
+        assert_eq!(tuple2.cross(tuple1), result2);
     }
 }
