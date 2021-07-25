@@ -3,7 +3,7 @@ use std::ops;
 use crate::float::floats_equal;
 
 #[derive(Debug, Copy, Clone)]
-struct Tuple {
+pub struct Tuple {
     x: f32,
     y: f32,
     z: f32,
@@ -29,6 +29,22 @@ impl Tuple {
 
     pub fn is_vector(&self) -> bool {
         self.w == 0.0
+    }
+
+    pub fn x(&self) -> f32 {
+        self.x
+    }
+
+    pub fn y(&self) -> f32 {
+        self.y
+    }
+
+    pub fn z(&self) -> f32 {
+        self.z
+    }
+
+    pub fn w(&self) -> f32 {
+        self.w
     }
 
     pub fn magnitude(&self) -> f32 {
@@ -280,5 +296,14 @@ mod tests {
         let result2 = Tuple::vector(1.0, -2.0, 1.0);
         assert_eq!(tuple1.cross(tuple2), result1);
         assert_eq!(tuple2.cross(tuple1), result2);
+    }
+
+    #[test]
+    fn tuple_x_y_z_w_getters() {
+        let tuple = Tuple::new(-0.5, 0.4, 1.7, 1.0);
+        assert_eq!(tuple.x(), -0.5);
+        assert_eq!(tuple.y(), 0.4);
+        assert_eq!(tuple.z(), 1.7);
+        assert_eq!(tuple.w(), 1.0);
     }
 }
