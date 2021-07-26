@@ -5,10 +5,10 @@ use crate::float::*;
 
 #[derive(Debug, Copy, Clone)]
 pub struct Tuple {
-    x: F,
-    y: F,
-    z: F,
-    w: F,
+    pub x: F,
+    pub y: F,
+    pub z: F,
+    pub w: F,
 }
 
 impl Tuple {
@@ -30,22 +30,6 @@ impl Tuple {
 
     pub fn is_vector(&self) -> bool {
         self.w == 0.0
-    }
-
-    pub fn x(&self) -> F {
-        self.x
-    }
-
-    pub fn y(&self) -> F {
-        self.y
-    }
-
-    pub fn z(&self) -> F {
-        self.z
-    }
-
-    pub fn w(&self) -> F {
-        self.w
     }
 
     pub fn magnitude(&self) -> F {
@@ -302,9 +286,9 @@ mod tests {
     #[test]
     fn tuple_x_y_z_w_getters() {
         let tuple = Tuple::new(-0.5, 0.4, 1.7, 1.0);
-        assert_eq!(tuple.x(), -0.5);
-        assert_eq!(tuple.y(), 0.4);
-        assert_eq!(tuple.z(), 1.7);
-        assert_eq!(tuple.w(), 1.0);
+        assert_eq!(tuple.x, -0.5);
+        assert_eq!(tuple.y, 0.4);
+        assert_eq!(tuple.z, 1.7);
+        assert_eq!(tuple.w, 1.0);
     }
 }

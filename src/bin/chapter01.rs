@@ -30,7 +30,7 @@ fn main() {
         wind: Tuple::vector(-0.01, 0.0, 0.0),
     };
 
-    while proj.position.y() > 0.0 {
+    while proj.position.y > 0.0 {
         tick(&env, &mut proj);
         println!("{:?}", proj.position);
     }
