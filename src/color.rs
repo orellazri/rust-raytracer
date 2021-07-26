@@ -5,9 +5,9 @@ use crate::float::*;
 
 #[derive(Debug, Copy, Clone)]
 pub struct Color {
-    r: F,
-    g: F,
-    b: F,
+    pub r: F,
+    pub g: F,
+    pub b: F,
 }
 
 impl Color {
@@ -53,6 +53,26 @@ impl Color {
             g: 0.0,
             b: 1.0,
         }
+    }
+
+    pub fn clamped(&self) -> Color {
+        let r = match self.r {
+            d if d < 0.0 => 0.0,
+            d if d > 1.0 => 1.0,
+            _ => self.r,
+        };
+        let g = match self.g {
+            d if d < 0.0 => 0.0,
+            d if d > 1.0 => 1.0,
+            _ => self.g,
+        };
+        let b = match self.b {
+            d if d < 0.0 => 0.0,
+            d if d > 1.0 => 1.0,
+            _ => self.b,
+        };
+
+        Color::new(r, g, b)
     }
 }
 
