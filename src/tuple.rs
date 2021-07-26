@@ -135,25 +135,25 @@ mod tests {
     #[test]
     fn tuple_with_w_1_is_point() {
         let tuple = Tuple::new(4.3, -4.2, 3.1, 1.0);
-        assert_eq!(tuple.is_point(), true);
+        assert!(tuple.is_point());
     }
 
     #[test]
     fn tuple_with_w_0_is_vector() {
         let tuple = Tuple::new(4.3, -4.2, 3.1, 0.0);
-        assert_eq!(tuple.is_vector(), true);
+        assert!(tuple.is_vector());
     }
 
     #[test]
     fn point_creates_tuple_with_w_1() {
         let tuple = Tuple::point(4.0, -4.0, 3.0);
-        assert_eq!(tuple.is_point(), true);
+        assert!(tuple.is_point());
     }
 
     #[test]
     fn vector_creates_tuple_with_w_0() {
         let tuple = Tuple::vector(4.0, -4.0, 3.0);
-        assert_eq!(tuple.is_vector(), true);
+        assert!(tuple.is_vector());
     }
 
     #[test]
@@ -278,7 +278,7 @@ mod tests {
     fn magnitude_of_normalized_vector() {
         let tuple = Tuple::vector(1.0, 2.0, 3.0);
         let equal = floats_equal(tuple.normalized().magnitude(), 1.0);
-        assert_eq!(equal, true);
+        assert!(equal);
     }
 
     #[test]
@@ -286,7 +286,7 @@ mod tests {
         let tuple1 = Tuple::vector(1.0, 2.0, 3.0);
         let tuple2 = Tuple::vector(2.0, 3.0, 4.0);
         let result = floats_equal(tuple1.dot(tuple2), 20.0);
-        assert_eq!(result, true);
+        assert!(result);
     }
 
     #[test]
