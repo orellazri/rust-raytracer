@@ -20,6 +20,11 @@ impl Canvas {
     }
 
     pub fn write_pixel(&mut self, x: usize, y: usize, color: Color) {
+        // Check bounds before writing (not checking less than 0 because due to type limits)
+        if x > self.width || y > self.height {
+            return;
+        }
+
         self.pixels[y * self.width + x] = color.clamped();
     }
 

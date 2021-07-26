@@ -1,1 +1,3 @@
-A raytracer built in Rust.
+# Rust Raytracer
+
+A raytracer built in Rust. 💡

@@ -1,5 +1,10 @@
 extern crate rust_raytracer as raytracer;
 
+use std::fs::File;
+use std::io::Write;
+
+use raytracer::canvas::*;
+use raytracer::color::*;
 use raytracer::tuple::*;
 
 #[derive(Debug)]
@@ -21,9 +26,11 @@ fn tick(env: &Environment, proj: &mut Projectile) {
 }
 
 fn main() {
+    let mut canvas = Canvas::new(400, 300);
+
     let mut proj = Projectile {
         position: Tuple::point(0.0, 1.0, 0.0),
-        velocity: Tuple::vector(1.0, 1.0, 0.0).normalized(),
+        velocity: Tuple::vector(1.0, 1.8, 0.0).normalized() * 11.25,
     };
     let env = Environment {
         gravity: Tuple::vector(0.0, -0.1, 0.0),
@@ -32,6 +39,15 @@ fn main() {
 
     while proj.position.y > 0.0 {
         tick(&env, &mut proj);
-        println!("{:?}", proj.position);
+        canvas.write_pixel(
+            proj.position.x as usize,
+            proj.position.y as usize,
+            Color::red(),
+        );
     }
+
+    println!("Starting to output ppm...");
+    let mut file = File::create("output/projectile.ppm").expect("Unable to create file");
+    file.write_all(canvas.to_ppm().as_bytes())
+        .expect("Unable to write data to file");
 }
