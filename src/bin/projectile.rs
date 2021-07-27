@@ -19,6 +19,38 @@ struct Environment {
     wind: Tuple,
 }
 
+enum Pixel {
+    Coordinate { x: usize, y: usize },
+    OutOfBounds,
+}
+
+impl Pixel {
+    pub fn from_point_for_canvas(point: Tuple, canvas: &Canvas) -> Pixel {
+        if !point.is_point() {
+            panic!("Given tuple is not a point. Point needed for conversion to screen space.");
+        }
+
+        let rx = point.x.round();
+        let ry = point.y.round();
+
+        let ux = rx as usize;
+        let uy = ry as usize;
+
+        if rx.is_sign_negative() || ry.is_sign_negative() || ux > canvas.width || uy > canvas.height
+        {
+            return Pixel::OutOfBounds;
+        }
+
+        let screen_x = ux;
+        let screen_y = canvas.height - uy;
+
+        Pixel::Coordinate {
+            x: screen_x,
+            y: screen_y,
+        }
+    }
+}
+
 fn tick(env: &Environment, proj: &mut Projectile) {
     let position = proj.position + proj.velocity;
     let velocity = proj.velocity + env.gravity + env.wind;
@@ -26,7 +58,7 @@ fn tick(env: &Environment, proj: &mut Projectile) {
 }
 
 fn main() {
-    let mut canvas = Canvas::new(400, 300);
+    let mut canvas = Canvas::new(900, 500);
 
     let mut proj = Projectile {
         position: Tuple::point(0.0, 1.0, 0.0),
@@ -37,13 +69,17 @@ fn main() {
         wind: Tuple::vector(-0.01, 0.0, 0.0),
     };
 
+    let red = Color::red();
+
     while proj.position.y > 0.0 {
         tick(&env, &mut proj);
-        canvas.write_pixel(
-            proj.position.x as usize,
-            proj.position.y as usize,
-            Color::red(),
-        );
+
+        match Pixel::from_point_for_canvas(proj.position, &canvas) {
+            Pixel::Coordinate { x, y } => {
+                canvas.write_pixel(x, y, red);
+            }
+            Pixel::OutOfBounds => {}
+        }
     }
 
     println!("Starting to output ppm...");
