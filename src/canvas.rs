@@ -30,28 +30,28 @@ impl Canvas {
 
     pub fn to_ppm(&self) -> String {
         // Header
-        let header = format!("P3\n{} {}\n255\n", self.width, self.height);
-        let mut data = String::new();
+        let header = String::from(format!("P3\n{} {}\n255\n", self.width, self.height).as_str());
+        let mut data = String::with_capacity(self.width * self.height * 3);
 
         // Pixel data
         for y in 0..self.height {
             for x in 0..self.width {
                 let pixel = self.pixels[y * self.width + x];
 
-                let mut topush = format!("{} ", (pixel.r * 255 as f32).round());
+                let mut topush = format!("{} ", (pixel.r * 255.0).round());
                 data.push_str(topush.as_str());
 
-                topush = format!("{} ", (pixel.g * 255 as f32).round());
+                topush = format!("{} ", (pixel.g * 255.0).round());
                 data.push_str(topush.as_str());
 
-                topush = format!("{} ", (pixel.b * 255 as f32).round());
+                topush = format!("{} ", (pixel.b * 255.0).round());
                 data.push_str(topush.as_str());
             }
 
             // Remove last space in line
             data = String::from(&data[..data.len() - 1]);
 
-            data.push_str("\n");
+            data.push('\n');
         }
 
         // Add newline after 70 characters where there is a space
@@ -67,13 +67,13 @@ impl Canvas {
             if line_char_counter == 69 {
                 // Look for next space
                 if data.as_bytes()[i - 1] == b' ' {
-                    data = String::from(format!("{}\n{}", &data[..i - 1], &data[i..]));
+                    data = format!("{}\n{}", &data[..i - 1], &data[i..]);
                 } else if data.as_bytes()[i] == b' ' {
-                    data = String::from(format!("{}\n{}", &data[..i], &data[i + 1..]));
+                    data = format!("{}\n{}", &data[..i], &data[i + 1..]);
                 } else if data.as_bytes()[i + 1] == b' ' {
-                    data = String::from(format!("{}\n{}", &data[..i + 1], &data[i + 2..]));
+                    data = format!("{}\n{}", &data[..i + 1], &data[i + 2..]);
                 } else if data.as_bytes()[i + 2] == b' ' {
-                    data = String::from(format!("{}\n{}", &data[..i + 2], &data[i + 3..]));
+                    data = format!("{}\n{}", &data[..i + 2], &data[i + 3..]);
                 }
 
                 line_char_counter = 0;

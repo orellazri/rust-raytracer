@@ -1,7 +1,7 @@
 use crate::F;
 use std::ops;
 
-use crate::float::*;
+use crate::utils::*;
 
 #[derive(Debug, Copy, Clone)]
 pub struct Tuple {
@@ -25,11 +25,11 @@ impl Tuple {
     }
 
     pub fn is_point(&self) -> bool {
-        self.w == 1.0
+        floats_equal(self.w, 1.0)
     }
 
     pub fn is_vector(&self) -> bool {
-        self.w == 0.0
+        floats_equal(self.w, 0.0)
     }
 
     pub fn magnitude(&self) -> F {
@@ -212,35 +212,35 @@ mod tests {
     fn magnitue_of_vector_1_0_0() {
         let tuple = Tuple::vector(1.0, 0.0, 0.0);
         let result = 1.0;
-        assert_eq!(tuple.magnitude(), result);
+        assert!(floats_equal(tuple.magnitude(), result))
     }
 
     #[test]
     fn magnitue_of_vector_0_1_0() {
         let tuple = Tuple::vector(0.0, 1.0, 0.0);
         let result = 1.0;
-        assert_eq!(tuple.magnitude(), result);
+        assert!(floats_equal(tuple.magnitude(), result))
     }
 
     #[test]
     fn magnitue_of_vector_0_0_12() {
         let tuple = Tuple::vector(0.0, 0.0, 1.0);
         let result = 1.0;
-        assert_eq!(tuple.magnitude(), result);
+        assert!(floats_equal(tuple.magnitude(), result))
     }
 
     #[test]
     fn magnitue_of_vector_1_2_3() {
         let tuple = Tuple::vector(1.0, 2.0, 3.0);
         let result = (14.0 as F).sqrt();
-        assert_eq!(tuple.magnitude(), result);
+        assert!(floats_equal(tuple.magnitude(), result))
     }
 
     #[test]
     fn magnitue_of_vector_negative_1_2_3() {
         let tuple = Tuple::vector(-1.0, -2.0, -3.0);
         let result = 3.74165738677; // sqrt of 14
-        assert_eq!(tuple.magnitude(), result);
+        assert!(floats_equal(tuple.magnitude(), result))
     }
 
     #[test]
@@ -286,9 +286,9 @@ mod tests {
     #[test]
     fn tuple_x_y_z_w_getters() {
         let tuple = Tuple::new(-0.5, 0.4, 1.7, 1.0);
-        assert_eq!(tuple.x, -0.5);
-        assert_eq!(tuple.y, 0.4);
-        assert_eq!(tuple.z, 1.7);
-        assert_eq!(tuple.w, 1.0);
+        assert!(floats_equal(tuple.x, -0.5));
+        assert!(floats_equal(tuple.y, 0.4));
+        assert!(floats_equal(tuple.z, 1.7));
+        assert!(floats_equal(tuple.w, 1.0));
     }
 }

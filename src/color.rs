@@ -1,7 +1,7 @@
 use crate::F;
 use std::ops;
 
-use crate::float::*;
+use crate::utils::*;
 
 #[derive(Debug, Copy, Clone)]
 pub struct Color {
