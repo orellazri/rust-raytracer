@@ -84,6 +84,6 @@ fn main() {
 
     println!("Starting to output ppm...");
     let mut file = File::create("output/projectile.ppm").expect("Unable to create file");
-    file.write_all(canvas.to_ppm().as_bytes())
+    file.write_all(&canvas.to_ppm()[..])
         .expect("Unable to write data to file");
 }

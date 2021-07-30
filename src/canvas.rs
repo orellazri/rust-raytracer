@@ -28,59 +28,50 @@ impl Canvas {
         self.pixels[y * self.width + x] = color.clamped();
     }
 
-    pub fn to_ppm(&self) -> String {
-        // Header
-        let header = String::from(format!("P3\n{} {}\n255\n", self.width, self.height).as_str());
-        let mut data = String::with_capacity(self.width * self.height * 3);
-
-        // Pixel data
-        for y in 0..self.height {
-            for x in 0..self.width {
-                let pixel = self.pixels[y * self.width + x];
-
-                let mut topush = format!("{} ", (pixel.r * 255.0).round());
-                data.push_str(topush.as_str());
-
-                topush = format!("{} ", (pixel.g * 255.0).round());
-                data.push_str(topush.as_str());
-
-                topush = format!("{} ", (pixel.b * 255.0).round());
-                data.push_str(topush.as_str());
-            }
-
-            // Remove last space in line
-            data = String::from(&data[..data.len() - 1]);
-
-            data.push('\n');
-        }
-
-        // Add newline after 70 characters where there is a space
-        let mut line_char_counter = 1;
-        for i in 1..data.len() {
-            if data.as_bytes()[i] == b'\n' {
-                line_char_counter = 0;
-                continue;
-            }
-
-            line_char_counter += 1;
-
-            if line_char_counter == 69 {
-                // Look for next space
-                if data.as_bytes()[i - 1] == b' ' {
-                    data = format!("{}\n{}", &data[..i - 1], &data[i..]);
-                } else if data.as_bytes()[i] == b' ' {
-                    data = format!("{}\n{}", &data[..i], &data[i + 1..]);
-                } else if data.as_bytes()[i + 1] == b' ' {
-                    data = format!("{}\n{}", &data[..i + 1], &data[i + 2..]);
-                } else if data.as_bytes()[i + 2] == b' ' {
-                    data = format!("{}\n{}", &data[..i + 2], &data[i + 3..]);
+    pub fn to_ppm(&self) -> Vec<u8> {
+        // Helper function to translate a vector of colors to a vector of bytes
+        // representing the text that will be written to the ppm
+        fn colors_to_ppm(colors: &[u8]) -> Vec<u8> {
+            let mut pos = 0;
+            let mut v: Vec<u8> = Vec::new();
+            for i in colors {
+                let n = format!("{}", i);
+                if pos + n.len() >= 68 {
+                    v.extend(String::from("\n").into_bytes());
+                    pos = 0;
                 }
-
-                line_char_counter = 0;
+                if pos != 0 {
+                    v.extend(String::from(" ").into_bytes());
+                    pos += 1;
+                }
+                v.extend(n.as_bytes());
+                pos += n.len();
             }
+
+            v
         }
 
-        format!("{}{}", header, data)
+        // Header
+        let mut header = Vec::new();
+        header.extend(String::from("P3\n").into_bytes());
+        header.extend(format!("{} {}\n", self.width, self.height).into_bytes());
+        header.extend(format!("{}\n", 255).into_bytes());
+
+        // Data
+        let mut data: Vec<u8> = Vec::new();
+        for y in 0..self.height {
+            let mut v: Vec<u8> = Vec::new();
+            for x in 0..self.width {
+                let clamped = self.pixel_at(x, y).clamped();
+                v.push((clamped.r * 255.0).round() as u8);
+                v.push((clamped.g * 255.0).round() as u8);
+                v.push((clamped.b * 255.0).round() as u8);
+            }
+            data.extend(colors_to_ppm(&v));
+            data.extend(String::from("\n").into_bytes());
+        }
+
+        header.into_iter().chain(data).collect()
     }
 }
 
@@ -113,7 +104,9 @@ mod tests {
     fn construct_ppm_header() {
         let canvas = Canvas::new(5, 3);
         let ppm = canvas.to_ppm();
-        assert_eq!(&ppm[..11], "P3\n5 3\n255\n");
+        let actual_result = &ppm[..11];
+        let expected_result = "P3\n5 3\n255\n".as_bytes();
+        assert_eq!(actual_result, expected_result);
     }
 
     #[test]
@@ -128,7 +121,7 @@ mod tests {
         canvas.write_pixel(4, 2, c3);
 
         let ppm = canvas.to_ppm();
-        let expected_result = "P3\n5 3\n255\n255 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n0 0 0 0 0 0 0 128 0 0 0 0 0 0 0\n0 0 0 0 0 0 0 0 0 0 0 0 0 0 255\n";
+        let expected_result = "P3\n5 3\n255\n255 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n0 0 0 0 0 0 0 128 0 0 0 0 0 0 0\n0 0 0 0 0 0 0 0 0 0 0 0 0 0 255\n".as_bytes();
         assert_eq!(ppm, expected_result);
     }
 
@@ -143,15 +136,15 @@ mod tests {
             }
         }
 
-        let ppm = canvas.to_ppm();
-        let expected_result = "P3\n10 2\n255\n255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204\n153 255 204 153 255 204 153 255 204 153 255 204 153\n255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204\n153 255 204 153 255 204 153 255 204 153 255 204 153\n";
-        assert_eq!(ppm, expected_result);
+        let actual_result = canvas.to_ppm();
+        let expected_result = "P3\n10 2\n255\n255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204\n153 255 204 153 255 204 153 255 204 153 255 204 153\n255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204\n153 255 204 153 255 204 153 255 204 153 255 204 153\n".as_bytes();
+        assert_eq!(actual_result, expected_result);
     }
 
     #[test]
     fn ppm_ends_with_newline() {
         let canvas = Canvas::new(5, 3);
-        let ppm = canvas.to_ppm();
-        assert_eq!(ppm.as_bytes()[ppm.len() - 1], b'\n');
+        let actual_result = canvas.to_ppm();
+        assert_eq!(actual_result[actual_result.len() - 1], b'\n');
     }
 }

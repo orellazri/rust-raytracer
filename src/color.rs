@@ -56,23 +56,11 @@ impl Color {
     }
 
     pub fn clamped(&self) -> Color {
-        let r = match self.r {
-            d if d < 0.0 => 0.0,
-            d if d > 1.0 => 1.0,
-            _ => self.r,
-        };
-        let g = match self.g {
-            d if d < 0.0 => 0.0,
-            d if d > 1.0 => 1.0,
-            _ => self.g,
-        };
-        let b = match self.b {
-            d if d < 0.0 => 0.0,
-            d if d > 1.0 => 1.0,
-            _ => self.b,
-        };
-
-        Color::new(r, g, b)
+        Color::new(
+            self.r.min(1.0).max(0.0),
+            self.g.min(1.0).max(0.0),
+            self.b.min(1.0).max(0.0),
+        )
     }
 }
 
@@ -149,5 +137,12 @@ mod tests {
         let color2 = Color::new(0.9, 1.0, 0.1);
         let result = Color::new(0.9, 0.2, 0.04);
         assert_eq!(color1 * color2, result);
+    }
+
+    #[test]
+    fn clamp_colors() {
+        let color = Color::new(2.3, -6.7, 0.8);
+        let result = color.clamped();
+        assert_eq!(result, Color::new(1.0, 0.0, 0.8));
     }
 }

@@ -1,4 +1,4 @@
-type F = f32;
+type F = f64;
 
 pub mod canvas;
 pub mod color;
