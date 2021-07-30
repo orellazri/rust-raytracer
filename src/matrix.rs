@@ -307,7 +307,7 @@ mod tests {
     }
 
     #[test]
-    fn inverse_of_4_4_matrix() {
+    fn inverse_of_matrix() {
         let matrix = Matrix::new(4, &[-5.0, 2.0, 6.0, -8.0, 1.0, -5.0, 1.0, 8.0, 7.0, 7.0, -6.0, -7.0, 1.0, -3.0, 7.0, 4.0]);
         let inverse = matrix.inverse();
 
@@ -325,5 +325,42 @@ mod tests {
             ],
         );
         assert_eq!(inverse, expected_result);
+    }
+
+    #[test]
+    fn inverse_of_matrix_2() {
+        let matrix = Matrix::new(4, &[8.0, -5.0, 9.0, 2.0, 7.0, 5.0, 6.0, 1.0, -6.0, 0.0, 9.0, 6.0, -3.0, 0.0, -9.0, -4.0]);
+        let expected_result = Matrix::new(
+            4,
+            &[
+                -0.15385, -0.15385, -0.28205, -0.53846, -0.07692, 0.12308, 0.02564, 0.03077, 0.35897, 0.35897, 0.43590, 0.92308, -0.69231, -0.69231,
+                -0.76923, -1.92308,
+            ],
+        );
+        assert_eq!(matrix.inverse(), expected_result);
+    }
+
+    #[test]
+    fn inverse_of_matrix_3() {
+        let matrix = Matrix::new(4, &[9.0, 3.0, 0.0, 9.0, -5.0, -2.0, -6.0, -3.0, -4.0, 9.0, 6.0, 4.0, -7.0, 6.0, 6.0, 2.0]);
+        let expected_result = Matrix::new(
+            4,
+            &[
+                -0.04074, -0.07778, 0.14444, -0.22222, -0.07778, 0.03333, 0.36667, -0.33333, -0.02901, -0.14630, -0.10926, 0.12963, 0.17778, 0.06667,
+                -0.26667, 0.33333,
+            ],
+        );
+        assert_eq!(matrix.inverse(), expected_result);
+    }
+
+    #[test]
+    fn multiply_product_by_inverse() {
+        // TODO: Maybe implement ops::Mul with reference to avoid moving matrix
+        let matrix1 = Matrix::new(4, &[3.0, -9.0, 7.0, 3.0, 3.0, -8.0, 2.0, -9.0, -4.0, 4.0, 4.0, 1.0, -6.0, 5.0, -1.0, 1.0]);
+        let matrix1b = Matrix::new(4, &[3.0, -9.0, 7.0, 3.0, 3.0, -8.0, 2.0, -9.0, -4.0, 4.0, 4.0, 1.0, -6.0, 5.0, -1.0, 1.0]);
+        let matrix2 = Matrix::new(4, &[8.0, 2.0, 2.0, 2.0, 3.0, -1.0, 7.0, 0.0, 7.0, 0.0, 5.0, 4.0, 6.0, -2.0, 0.0, 5.0]);
+        let matrix2b = Matrix::new(4, &[8.0, 2.0, 2.0, 2.0, 3.0, -1.0, 7.0, 0.0, 7.0, 0.0, 5.0, 4.0, 6.0, -2.0, 0.0, 5.0]);
+        let matrix3 = matrix1 * matrix2;
+        assert_eq!(matrix3 * (matrix2b.inverse()), matrix1b);
     }
 }
