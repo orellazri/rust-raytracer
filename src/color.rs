@@ -1,7 +1,7 @@
 use crate::F;
 use std::ops;
 
-use crate::utils::*;
+use crate::utils::floats_equal;
 
 #[derive(Debug, Copy, Clone)]
 pub struct Color {
@@ -11,11 +11,11 @@ pub struct Color {
 }
 
 impl Color {
-    pub fn new(r: F, g: F, b: F) -> Color {
+    pub fn new(r: F, g: F, b: F) -> Self {
         Color { r, g, b }
     }
 
-    pub fn black() -> Color {
+    pub fn black() -> Self {
         Color {
             r: 0.0,
             g: 0.0,
@@ -23,7 +23,7 @@ impl Color {
         }
     }
 
-    pub fn white() -> Color {
+    pub fn white() -> Self {
         Color {
             r: 1.0,
             g: 1.0,
@@ -31,7 +31,7 @@ impl Color {
         }
     }
 
-    pub fn red() -> Color {
+    pub fn red() -> Self {
         Color {
             r: 1.0,
             g: 0.0,
@@ -39,7 +39,7 @@ impl Color {
         }
     }
 
-    pub fn green() -> Color {
+    pub fn green() -> Self {
         Color {
             r: 0.0,
             g: 1.0,
@@ -47,7 +47,7 @@ impl Color {
         }
     }
 
-    pub fn blue() -> Color {
+    pub fn blue() -> Self {
         Color {
             r: 0.0,
             g: 0.0,
@@ -55,7 +55,7 @@ impl Color {
         }
     }
 
-    pub fn clamped(&self) -> Color {
+    pub fn clamped(&self) -> Self {
         Color::new(
             self.r.min(1.0).max(0.0),
             self.g.min(1.0).max(0.0),

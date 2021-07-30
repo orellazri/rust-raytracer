@@ -1,7 +1,7 @@
 use crate::F;
 use std::ops;
 
-use crate::utils::*;
+use crate::utils::floats_equal;
 
 #[derive(Debug, Copy, Clone)]
 pub struct Tuple {
@@ -36,7 +36,7 @@ impl Tuple {
         (self.x * self.x + self.y * self.y + self.z * self.z + self.w * self.w).sqrt()
     }
 
-    pub fn normalized(&self) -> Tuple {
+    pub fn normalized(&self) -> Self {
         *self / self.magnitude()
     }
 
@@ -44,7 +44,7 @@ impl Tuple {
         self.x * rhs.x + self.y * rhs.y + self.z * rhs.z + self.w * rhs.w
     }
 
-    pub fn cross(&self, rhs: Tuple) -> Tuple {
+    pub fn cross(&self, rhs: Tuple) -> Self {
         Tuple::vector(
             self.y * rhs.z - self.z * rhs.y,
             self.z * rhs.x - self.x * rhs.z,
