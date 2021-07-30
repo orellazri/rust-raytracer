@@ -2,4 +2,4 @@
 
 A raytracer built in Rust. 💡
 
-A test-driven raytracer built with the guidance of the book "The Ray Tracer Challenge".
+A test-driven raytracer based on the book "The Ray Tracer Challenge".
