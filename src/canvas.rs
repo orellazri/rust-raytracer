@@ -60,7 +60,7 @@ impl Canvas {
         header.extend(format!("{}\n", 255).as_bytes());
 
         // Data
-        let mut data: Vec<u8> = Vec::with_capacity(self.width * self.height);
+        let mut data: Vec<u8> = Vec::with_capacity(self.width * self.height * 2);
         let mut colors_map: HashMap<Vec<u8>, Vec<u8>> = HashMap::new();
         for y in 0..self.height {
             let mut row: Vec<u8> = Vec::new();
