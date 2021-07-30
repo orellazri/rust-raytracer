@@ -37,11 +37,11 @@ impl Canvas {
             for i in colors {
                 let n = format!("{}", i);
                 if pos + n.len() >= 68 {
-                    v.extend(String::from("\n").into_bytes());
+                    v.extend("\n".as_bytes());
                     pos = 0;
                 }
                 if pos != 0 {
-                    v.extend(String::from(" ").into_bytes());
+                    v.extend(" ".as_bytes());
                     pos += 1;
                 }
                 v.extend(n.as_bytes());
@@ -53,12 +53,12 @@ impl Canvas {
 
         // Header
         let mut header = Vec::new();
-        header.extend(String::from("P3\n").into_bytes());
-        header.extend(format!("{} {}\n", self.width, self.height).into_bytes());
-        header.extend(format!("{}\n", 255).into_bytes());
+        header.extend("P3\n".as_bytes());
+        header.extend(format!("{} {}\n", self.width, self.height).as_bytes());
+        header.extend(format!("{}\n", 255).as_bytes());
 
         // Data
-        let mut data: Vec<u8> = Vec::new();
+        let mut data: Vec<u8> = Vec::with_capacity(self.width * self.height);
         for y in 0..self.height {
             let mut v: Vec<u8> = Vec::new();
             for x in 0..self.width {
@@ -68,7 +68,7 @@ impl Canvas {
                 v.push((clamped.b * 255.0).round() as u8);
             }
             data.extend(colors_to_ppm(&v));
-            data.extend(String::from("\n").into_bytes());
+            data.extend("\n".as_bytes());
         }
 
         header.into_iter().chain(data).collect()

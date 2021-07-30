@@ -3,9 +3,7 @@ extern crate rust_raytracer as raytracer;
 use std::fs::File;
 use std::io::Write;
 
-use raytracer::canvas::*;
-use raytracer::color::*;
-use raytracer::tuple::*;
+use raytracer::{canvas::*, color::*, tuple::*};
 
 #[derive(Debug)]
 struct Projectile {
