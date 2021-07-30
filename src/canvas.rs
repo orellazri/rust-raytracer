@@ -1,5 +1,7 @@
 use crate::color::Color;
 
+use hashbrown::HashMap;
+
 pub struct Canvas {
     pub width: usize,
     pub height: usize,
@@ -59,15 +61,23 @@ impl Canvas {
 
         // Data
         let mut data: Vec<u8> = Vec::with_capacity(self.width * self.height);
+        let mut colors_map: HashMap<Vec<u8>, Vec<u8>> = HashMap::new();
         for y in 0..self.height {
-            let mut v: Vec<u8> = Vec::new();
+            let mut row: Vec<u8> = Vec::new();
             for x in 0..self.width {
                 let clamped = self.pixel_at(x, y).clamped();
-                v.push((clamped.r * 255.0).round() as u8);
-                v.push((clamped.g * 255.0).round() as u8);
-                v.push((clamped.b * 255.0).round() as u8);
+                row.push((clamped.r * 255.0).round() as u8);
+                row.push((clamped.g * 255.0).round() as u8);
+                row.push((clamped.b * 255.0).round() as u8);
             }
-            data.extend(colors_to_ppm(&v));
+
+            let rowclone = row.clone();
+            if !colors_map.contains_key(&row) {
+                colors_map.insert(row, colors_to_ppm(&rowclone));
+            }
+
+            data.extend(colors_map.get(&rowclone).unwrap());
+            // data.extend(colors_to_ppm(&row));
             data.extend("\n".as_bytes());
         }
 

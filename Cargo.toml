@@ -6,10 +6,11 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-
+hashbrown = "0.11"
 
 [dev-dependencies]
 criterion = "0.3"
+rand = "0.8.4"
 
 [[bench]]
 name = "ppm_benchmark"
