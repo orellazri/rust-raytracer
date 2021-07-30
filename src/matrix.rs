@@ -58,11 +58,30 @@ impl Matrix {
     }
 
     pub fn cofactor(&self, row: usize, col: usize) -> F {
-        if row + col % 2 == 0 {
+        if (row + col) % 2 == 0 {
             return self.minor(row, col);
         }
 
         -self.minor(row, col)
+    }
+
+    pub fn invertible(&self) -> bool {
+        !floats_equal(self.det(), 0.0)
+    }
+
+    pub fn inverse(&self) -> Self {
+        assert!(self.invertible());
+
+        let mut v: Vec<F> = Vec::with_capacity(self.dim * self.dim);
+        let det = self.det();
+
+        for row in 0..self.dim {
+            for col in 0..self.dim {
+                v.push(self.cofactor(col, row) / det);
+            }
+        }
+
+        Matrix::new(self.dim, &v)
     }
 }
 
@@ -271,5 +290,40 @@ mod tests {
         assert!(floats_equal(matrix.cofactor(0, 2), 210.0));
         assert!(floats_equal(matrix.cofactor(0, 3), 51.0));
         assert!(floats_equal(matrix.det(), -4071.0));
+    }
+
+    #[test]
+    fn matrix_is_invertible() {
+        let matrix = Matrix::new(4, &[6.0, 4.0, 4.0, 4.0, 5.0, 5.0, 7.0, 6.0, 4.0, -9.0, 3.0, -7.0, 9.0, 1.0, 7.0, -6.0]);
+        assert!(floats_equal(matrix.det(), -2120.0));
+        assert!(matrix.invertible());
+    }
+
+    #[test]
+    fn matrix_is_not_invertible() {
+        let matrix = Matrix::new(4, &[-4.0, 2.0, -2.0, -3.0, 9.0, 6.0, 2.0, 6.0, 0.0, -5.0, 1.0, -5.0, 0.0, 0.0, 0.0, 0.0]);
+        assert!(floats_equal(matrix.det(), 0.0));
+        assert!(!matrix.invertible());
+    }
+
+    #[test]
+    fn inverse_of_4_4_matrix() {
+        let matrix = Matrix::new(4, &[-5.0, 2.0, 6.0, -8.0, 1.0, -5.0, 1.0, 8.0, 7.0, 7.0, -6.0, -7.0, 1.0, -3.0, 7.0, 4.0]);
+        let inverse = matrix.inverse();
+
+        assert!(floats_equal(matrix.det(), 532.0));
+        assert!(floats_equal(matrix.cofactor(2, 3), -160.0));
+        assert!(floats_equal(inverse.at(3, 2), -160.0 / 532.0));
+        assert!(floats_equal(matrix.cofactor(3, 2), 105.0));
+        assert!(floats_equal(inverse.at(2, 3), 105.0 / 532.0));
+
+        let expected_result = Matrix::new(
+            4,
+            &[
+                0.21805, 0.45113, 0.24060, -0.04511, -0.80827, -1.45677, -0.44361, 0.52068, -0.07895, -0.22368, -0.05263, 0.19737, -0.52256,
+                -0.81391, -0.30075, 0.30639,
+            ],
+        );
+        assert_eq!(inverse, expected_result);
     }
 }
