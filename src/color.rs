@@ -75,32 +75,32 @@ impl PartialEq for Color {
 impl ops::Add for Color {
     type Output = Color;
 
-    fn add(self, rhs: Color) -> Color {
-        Color::new(self.r + rhs.r, self.g + rhs.g, self.b + rhs.b)
+    fn add(self, other: Color) -> Color {
+        Color::new(self.r + other.r, self.g + other.g, self.b + other.b)
     }
 }
 
 impl ops::Sub for Color {
     type Output = Color;
 
-    fn sub(self, rhs: Color) -> Color {
-        Color::new(self.r - rhs.r, self.g - rhs.g, self.b - rhs.b)
+    fn sub(self, other: Color) -> Color {
+        Color::new(self.r - other.r, self.g - other.g, self.b - other.b)
     }
 }
 
 impl ops::Mul<F> for Color {
     type Output = Color;
 
-    fn mul(self, rhs: F) -> Color {
-        Color::new(self.r * rhs, self.g * rhs, self.b * rhs)
+    fn mul(self, other: F) -> Color {
+        Color::new(self.r * other, self.g * other, self.b * other)
     }
 }
 
 impl ops::Mul for Color {
     type Output = Color;
 
-    fn mul(self, rhs: Color) -> Color {
-        Color::new(self.r * rhs.r, self.g * rhs.g, self.b * rhs.b)
+    fn mul(self, other: Color) -> Color {
+        Color::new(self.r * other.r, self.g * other.g, self.b * other.b)
     }
 }
 

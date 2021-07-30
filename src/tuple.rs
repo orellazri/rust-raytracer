@@ -40,15 +40,15 @@ impl Tuple {
         *self / self.magnitude()
     }
 
-    pub fn dot(&self, rhs: Tuple) -> F {
-        self.x * rhs.x + self.y * rhs.y + self.z * rhs.z + self.w * rhs.w
+    pub fn dot(&self, other: Tuple) -> F {
+        self.x * other.x + self.y * other.y + self.z * other.z + self.w * other.w
     }
 
-    pub fn cross(&self, rhs: Tuple) -> Self {
+    pub fn cross(&self, other: Tuple) -> Self {
         Tuple::vector(
-            self.y * rhs.z - self.z * rhs.y,
-            self.z * rhs.x - self.x * rhs.z,
-            self.x * rhs.y - self.y * rhs.x,
+            self.y * other.z - self.z * other.y,
+            self.z * other.x - self.x * other.z,
+            self.x * other.y - self.y * other.x,
         )
     }
 }
@@ -65,12 +65,12 @@ impl PartialEq for Tuple {
 impl ops::Add for Tuple {
     type Output = Tuple;
 
-    fn add(self, rhs: Tuple) -> Tuple {
+    fn add(self, other: Tuple) -> Tuple {
         Tuple::new(
-            self.x + rhs.x,
-            self.y + rhs.y,
-            self.z + rhs.z,
-            self.w + rhs.w,
+            self.x + other.x,
+            self.y + other.y,
+            self.z + other.z,
+            self.w + other.w,
         )
     }
 }
@@ -78,12 +78,12 @@ impl ops::Add for Tuple {
 impl ops::Sub for Tuple {
     type Output = Tuple;
 
-    fn sub(self, rhs: Tuple) -> Tuple {
+    fn sub(self, other: Tuple) -> Tuple {
         Tuple::new(
-            self.x - rhs.x,
-            self.y - rhs.y,
-            self.z - rhs.z,
-            self.w - rhs.w,
+            self.x - other.x,
+            self.y - other.y,
+            self.z - other.z,
+            self.w - other.w,
         )
     }
 }
@@ -99,16 +99,26 @@ impl ops::Neg for Tuple {
 impl ops::Mul<F> for Tuple {
     type Output = Tuple;
 
-    fn mul(self, rhs: F) -> Tuple {
-        Tuple::new(self.x * rhs, self.y * rhs, self.z * rhs, self.w * rhs)
+    fn mul(self, other: F) -> Tuple {
+        Tuple::new(
+            self.x * other,
+            self.y * other,
+            self.z * other,
+            self.w * other,
+        )
     }
 }
 
 impl ops::Div<F> for Tuple {
     type Output = Tuple;
 
-    fn div(self, rhs: F) -> Tuple {
-        Tuple::new(self.x / rhs, self.y / rhs, self.z / rhs, self.w / rhs)
+    fn div(self, other: F) -> Tuple {
+        Tuple::new(
+            self.x / other,
+            self.y / other,
+            self.z / other,
+            self.w / other,
+        )
     }
 }
 
