@@ -92,6 +92,7 @@ mod tests {
     #[test]
     fn create_canvas() {
         let canvas = Canvas::new(10, 20);
+
         assert_eq!(canvas.width, 10);
         assert_eq!(canvas.height, 20);
 
@@ -107,6 +108,7 @@ mod tests {
         let mut canvas = Canvas::new(10, 20);
         let red = Color::red();
         canvas.write_pixel(2, 3, red);
+
         assert_eq!(canvas.pixel_at(2, 3), red);
     }
 
@@ -116,6 +118,7 @@ mod tests {
         let ppm = canvas.to_ppm();
         let actual_result = &ppm[..11];
         let expected_result = "P3\n5 3\n255\n".as_bytes();
+
         assert_eq!(actual_result, expected_result);
     }
 
@@ -131,7 +134,9 @@ mod tests {
         canvas.write_pixel(4, 2, c3);
 
         let ppm = canvas.to_ppm();
-        let expected_result = "P3\n5 3\n255\n255 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n0 0 0 0 0 0 0 128 0 0 0 0 0 0 0\n0 0 0 0 0 0 0 0 0 0 0 0 0 0 255\n".as_bytes();
+        let expected_result =
+            "P3\n5 3\n255\n255 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n0 0 0 0 0 0 0 128 0 0 0 0 0 0 0\n0 0 0 0 0 0 0 0 0 0 0 0 0 0 255\n".as_bytes();
+
         assert_eq!(ppm, expected_result);
     }
 
@@ -148,6 +153,7 @@ mod tests {
 
         let actual_result = canvas.to_ppm();
         let expected_result = "P3\n10 2\n255\n255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204\n153 255 204 153 255 204 153 255 204 153 255 204 153\n255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204\n153 255 204 153 255 204 153 255 204 153 255 204 153\n".as_bytes();
+
         assert_eq!(actual_result, expected_result);
     }
 
@@ -155,6 +161,7 @@ mod tests {
     fn ppm_ends_with_newline() {
         let canvas = Canvas::new(5, 3);
         let actual_result = canvas.to_ppm();
+
         assert_eq!(actual_result[actual_result.len() - 1], b'\n');
     }
 }

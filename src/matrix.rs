@@ -141,6 +141,7 @@ mod tests {
     #[test]
     fn construct_2_2_matrix() {
         let matrix = Matrix::new(2, &[-3.0, 5.0, 1.0, -2.0]);
+
         assert!(floats_equal(matrix.at(0, 0), -3.0));
         assert!(floats_equal(matrix.at(0, 1), 5.0));
         assert!(floats_equal(matrix.at(1, 0), 1.0));
@@ -150,6 +151,7 @@ mod tests {
     #[test]
     fn construct_3_3_matrix() {
         let matrix = Matrix::new(3, &[-3.0, 5.0, 0.0, 1.0, -2.0, -7.0, 0.0, 1.0, 1.0]);
+
         assert!(floats_equal(matrix.at(0, 0), -3.0));
         assert!(floats_equal(matrix.at(1, 1), -2.0));
         assert!(floats_equal(matrix.at(2, 2), 1.0));
@@ -163,6 +165,7 @@ mod tests {
                 1.0, 2.0, 3.0, 4.0, 5.5, 6.5, 7.5, 8.5, 9.0, 10.0, 11.0, 12.0, 13.5, 14.5, 15.5, 16.5, 69.2,
             ],
         );
+
         assert!(floats_equal(matrix.at(0, 0), 1.0));
         assert!(floats_equal(matrix.at(0, 3), 4.0));
         assert!(floats_equal(matrix.at(1, 0), 5.5));
@@ -176,6 +179,7 @@ mod tests {
     fn matrix_equality_with_identical_matrices() {
         let matrix1 = Matrix::new(4, &[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0]);
         let matrix2 = Matrix::new(4, &[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0]);
+
         assert!(matrix1 == matrix2);
     }
 
@@ -183,6 +187,7 @@ mod tests {
     fn matrix_equality_with_different_matrices() {
         let matrix1 = Matrix::new(4, &[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0]);
         let matrix2 = Matrix::new(4, &[2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 1.0]);
+
         assert!(matrix1 != matrix2);
     }
 
@@ -196,6 +201,7 @@ mod tests {
                 20.0, 22.0, 50.0, 48.0, 44.0, 54.0, 114.0, 108.0, 40.0, 58.0, 110.0, 102.0, 16.0, 26.0, 46.0, 42.0,
             ],
         );
+
         assert_eq!(matrix1 * matrix2, expected_result);
     }
 
@@ -204,6 +210,7 @@ mod tests {
         let matrix = Matrix::new(4, &[1.0, 2.0, 3.0, 4.0, 2.0, 4.0, 4.0, 2.0, 8.0, 6.0, 4.0, 1.0, 0.0, 0.0, 0.0, 1.0]);
         let tuple = Tuple::new(1.0, 2.0, 3.0, 1.0);
         let expected_result = Tuple::new(18.0, 24.0, 33.0, 1.0);
+
         assert_eq!(matrix * tuple, expected_result);
     }
 
@@ -212,6 +219,7 @@ mod tests {
         let matrix1 = Matrix::new(4, &[0.0, 1.0, 2.0, 4.0, 1.0, 2.0, 4.0, 8.0, 2.0, 4.0, 8.0, 16.0, 4.0, 8.0, 16.0, 32.0]);
         let matrix2 = Matrix::new(4, &[1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0]);
         let expected_result = Matrix::new(4, &[0.0, 1.0, 2.0, 4.0, 1.0, 2.0, 4.0, 8.0, 2.0, 4.0, 8.0, 16.0, 4.0, 8.0, 16.0, 32.0]);
+
         assert_eq!(matrix1 * matrix2, expected_result);
     }
 
@@ -220,6 +228,7 @@ mod tests {
         let matrix = Matrix::new(4, &[1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0]);
         let tuple = Tuple::new(1.0, 2.0, 3.0, 4.0);
         let expected_result = Tuple::new(1.0, 2.0, 3.0, 4.0);
+
         assert_eq!(matrix * tuple, expected_result);
     }
 
@@ -233,12 +242,14 @@ mod tests {
     #[test]
     fn transpose_identity_matrix() {
         let matrix = Matrix::new(4, &[1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0]);
+
         assert_eq!(matrix.transpose(), matrix);
     }
 
     #[test]
     fn determinant_of_2_2_matrix() {
         let matrix = Matrix::new(2, &[1.0, 5.0, -3.0, 2.0]);
+
         assert!(floats_equal(matrix.det(), 17.0));
     }
 
@@ -246,6 +257,7 @@ mod tests {
     fn submatrix_of_3_3_matrix() {
         let matrix = Matrix::new(3, &[1.0, 5.0, 0.0, -3.0, 2.0, 7.0, 0.0, 6.0, -3.0]);
         let expected_result = Matrix::new(2, &[-3.0, 2.0, 0.0, 6.0]);
+
         assert_eq!(matrix.submatrix(0, 2), expected_result);
     }
 
@@ -253,6 +265,7 @@ mod tests {
     fn submatrix_of_4_4_matrix() {
         let matrix = Matrix::new(4, &[-6.0, 1.0, 1.0, 6.0, -8.0, 5.0, 8.0, 6.0, -1.0, 0.0, 8.0, 2.0, -7.0, 1.0, -1.0, 1.0]);
         let expected_result = Matrix::new(3, &[-6.0, 1.0, 6.0, -8.0, 8.0, 6.0, -7.0, -1.0, 1.0]);
+
         assert_eq!(matrix.submatrix(2, 1), expected_result);
     }
 
@@ -260,6 +273,7 @@ mod tests {
     fn minor_of_3_3_matrix() {
         let matrix = Matrix::new(3, &[3.0, 5.0, 0.0, 2.0, -1.0, -7.0, 6.0, -1.0, 5.0]);
         let submatrix = matrix.submatrix(1, 0);
+
         assert!(floats_equal(submatrix.det(), 25.0));
         assert!(floats_equal(matrix.minor(1, 0), 25.0));
     }
@@ -276,6 +290,7 @@ mod tests {
     #[test]
     fn determinant_of_3_3_matrix() {
         let matrix = Matrix::new(3, &[1.0, 2.0, 6.0, -5.0, 8.0, -4.0, 2.0, 6.0, 4.0]);
+
         assert!(floats_equal(matrix.cofactor(0, 0), 56.0));
         assert!(floats_equal(matrix.cofactor(0, 1), 12.0));
         assert!(floats_equal(matrix.cofactor(0, 2), -46.0));
@@ -285,6 +300,7 @@ mod tests {
     #[test]
     fn determinant_of_4_4_matrix() {
         let matrix = Matrix::new(4, &[-2.0, -8.0, 3.0, 5.0, -3.0, 1.0, 7.0, 3.0, 1.0, 2.0, -9.0, 6.0, -6.0, 7.0, 7.0, -9.0]);
+
         assert!(floats_equal(matrix.cofactor(0, 0), 690.0));
         assert!(floats_equal(matrix.cofactor(0, 1), 447.0));
         assert!(floats_equal(matrix.cofactor(0, 2), 210.0));
@@ -295,6 +311,7 @@ mod tests {
     #[test]
     fn matrix_is_invertible() {
         let matrix = Matrix::new(4, &[6.0, 4.0, 4.0, 4.0, 5.0, 5.0, 7.0, 6.0, 4.0, -9.0, 3.0, -7.0, 9.0, 1.0, 7.0, -6.0]);
+
         assert!(floats_equal(matrix.det(), -2120.0));
         assert!(matrix.invertible());
     }
@@ -302,6 +319,7 @@ mod tests {
     #[test]
     fn matrix_is_not_invertible() {
         let matrix = Matrix::new(4, &[-4.0, 2.0, -2.0, -3.0, 9.0, 6.0, 2.0, 6.0, 0.0, -5.0, 1.0, -5.0, 0.0, 0.0, 0.0, 0.0]);
+
         assert!(floats_equal(matrix.det(), 0.0));
         assert!(!matrix.invertible());
     }
@@ -324,6 +342,7 @@ mod tests {
                 -0.81391, -0.30075, 0.30639,
             ],
         );
+
         assert_eq!(inverse, expected_result);
     }
 
@@ -337,6 +356,7 @@ mod tests {
                 -0.76923, -1.92308,
             ],
         );
+
         assert_eq!(matrix.inverse(), expected_result);
     }
 
@@ -350,6 +370,7 @@ mod tests {
                 -0.26667, 0.33333,
             ],
         );
+
         assert_eq!(matrix.inverse(), expected_result);
     }
 
@@ -361,6 +382,7 @@ mod tests {
         let matrix2 = Matrix::new(4, &[8.0, 2.0, 2.0, 2.0, 3.0, -1.0, 7.0, 0.0, 7.0, 0.0, 5.0, 4.0, 6.0, -2.0, 0.0, 5.0]);
         let matrix2b = Matrix::new(4, &[8.0, 2.0, 2.0, 2.0, 3.0, -1.0, 7.0, 0.0, 7.0, 0.0, 5.0, 4.0, 6.0, -2.0, 0.0, 5.0]);
         let matrix3 = matrix1 * matrix2;
+
         assert_eq!(matrix3 * (matrix2b.inverse()), matrix1b);
     }
 }
