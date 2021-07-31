@@ -27,7 +27,7 @@ impl Matrix {
     }
 
     pub fn transpose(&self) -> Self {
-        let mut elems: Vec<F> = Vec::with_capacity(self.dim * self.dim);
+        let mut elems: Vec<F> = Vec::with_capacity(self.dim.pow(2));
 
         for row in 0..self.dim {
             for col in 0..self.dim {
@@ -79,7 +79,7 @@ impl Matrix {
     pub fn inverse(&self) -> Self {
         assert!(self.invertible());
 
-        let mut v: Vec<F> = Vec::with_capacity(self.dim * self.dim);
+        let mut v: Vec<F> = Vec::with_capacity(self.dim.pow(2));
         let det = self.det();
 
         for row in 0..self.dim {
@@ -114,7 +114,7 @@ impl ops::Mul for Matrix {
     fn mul(self, other: Matrix) -> Matrix {
         assert!(self.dim == other.dim);
 
-        let mut v: Vec<F> = vec![0.0; self.dim * self.dim];
+        let mut v: Vec<F> = vec![0.0; self.dim.pow(2)];
 
         for row in 0..self.dim {
             for col in 0..self.dim {
