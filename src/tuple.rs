@@ -40,7 +40,7 @@ impl Tuple {
         *self / self.magnitude()
     }
 
-    pub fn dot(&self, other: Tuple) -> F {
+    pub fn dot(&self, other: &Tuple) -> F {
         self.x * other.x + self.y * other.y + self.z * other.z + self.w * other.w
     }
 
@@ -50,6 +50,10 @@ impl Tuple {
             self.z * other.x - self.x * other.z,
             self.x * other.y - self.y * other.x,
         )
+    }
+
+    pub fn reflect(&self, normal: &Tuple) -> Self {
+        self - &(normal * 2.0 * self.dot(normal))
     }
 }
 
@@ -67,10 +71,26 @@ impl ops::Add for Tuple {
     }
 }
 
+impl ops::Add for &Tuple {
+    type Output = Tuple;
+
+    fn add(self, other: &Tuple) -> Tuple {
+        Tuple::new(self.x + other.x, self.y + other.y, self.z + other.z, self.w + other.w)
+    }
+}
+
 impl ops::Sub for Tuple {
     type Output = Tuple;
 
     fn sub(self, other: Tuple) -> Tuple {
+        Tuple::new(self.x - other.x, self.y - other.y, self.z - other.z, self.w - other.w)
+    }
+}
+
+impl ops::Sub for &Tuple {
+    type Output = Tuple;
+
+    fn sub(self, other: &Tuple) -> Tuple {
         Tuple::new(self.x - other.x, self.y - other.y, self.z - other.z, self.w - other.w)
     }
 }
@@ -91,6 +111,14 @@ impl ops::Mul<F> for Tuple {
     }
 }
 
+impl ops::Mul<F> for &Tuple {
+    type Output = Tuple;
+
+    fn mul(self, other: F) -> Tuple {
+        Tuple::new(self.x * other, self.y * other, self.z * other, self.w * other)
+    }
+}
+
 impl ops::Div<F> for Tuple {
     type Output = Tuple;
 
@@ -101,6 +129,8 @@ impl ops::Div<F> for Tuple {
 
 #[cfg(test)]
 mod tests {
+    use std::f64::consts::SQRT_2;
+
     use super::*;
 
     #[test]
@@ -235,7 +265,7 @@ mod tests {
     #[test]
     fn magnitue_of_vector_1_2_3() {
         let tuple = Tuple::vector(1.0, 2.0, 3.0);
-        let result = (14.0 as F).sqrt();
+        let result = F::sqrt(14.0);
 
         assert!(floats_equal(tuple.magnitude(), result))
     }
@@ -277,7 +307,7 @@ mod tests {
     fn dot_product_of_two_vectors() {
         let tuple1 = Tuple::vector(1.0, 2.0, 3.0);
         let tuple2 = Tuple::vector(2.0, 3.0, 4.0);
-        let result = floats_equal(tuple1.dot(tuple2), 20.0);
+        let result = floats_equal(tuple1.dot(&tuple2), 20.0);
 
         assert!(result);
     }
@@ -301,5 +331,21 @@ mod tests {
         assert!(floats_equal(tuple.y, 0.4));
         assert!(floats_equal(tuple.z, 1.7));
         assert!(floats_equal(tuple.w, 1.0));
+    }
+
+    #[test]
+    fn reflect_vector_approaching_at_45_deg() {
+        let v = Tuple::vector(1.0, -1.0, 0.0);
+        let n = Tuple::vector(0.0, 1.0, 0.0);
+        let r = v.reflect(&n);
+        assert_eq!(r, Tuple::vector(1.0, 1.0, 0.0));
+    }
+
+    #[test]
+    fn reflect_vector_off_slanted_surface() {
+        let v = Tuple::vector(0.0, -1.0, 0.0);
+        let n = Tuple::vector(SQRT_2 / 2.0, SQRT_2 / 2.0, 0.0);
+        let r = v.reflect(&n);
+        assert_eq!(r, Tuple::vector(1.0, 0.0, 0.0));
     }
 }

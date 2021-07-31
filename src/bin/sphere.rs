@@ -12,10 +12,10 @@ fn main() {
     let red = Color::red();
     let sphere = Sphere::new();
 
-    let canvas_pixels = 2000;
+    let canvas_pixels = 500;
     let ray_origin = Tuple::point(0.0, 0.0, -5.0);
-    let wall_size = 10.0;
-    let wall_z = 5.0;
+    let wall_size = 7.0;
+    let wall_z = 10.0;
     let pixel_size = wall_size / canvas_pixels as f64;
     let half = wall_size / 2.0;
 

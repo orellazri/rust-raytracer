@@ -35,6 +35,10 @@ impl Color {
         Color { r: 0.0, g: 0.0, b: 1.0 }
     }
 
+    pub fn yellow() -> Self {
+        Color { r: 1.0, g: 1.0, b: 0.0 }
+    }
+
     pub fn clamped(&self) -> Self {
         Color::new(self.r.min(1.0).max(0.0), self.g.min(1.0).max(0.0), self.b.min(1.0).max(0.0))
     }

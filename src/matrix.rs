@@ -154,6 +154,19 @@ impl ops::Mul<Tuple> for &Matrix {
     }
 }
 
+impl ops::Mul<&Tuple> for Matrix {
+    type Output = Tuple;
+
+    fn mul(self, other: &Tuple) -> Tuple {
+        Tuple::new(
+            self.at(0, 0) * other.x + self.at(0, 1) * other.y + self.at(0, 2) * other.z + self.at(0, 3) * other.w,
+            self.at(1, 0) * other.x + self.at(1, 1) * other.y + self.at(1, 2) * other.z + self.at(1, 3) * other.w,
+            self.at(2, 0) * other.x + self.at(2, 1) * other.y + self.at(2, 2) * other.z + self.at(2, 3) * other.w,
+            self.at(3, 0) * other.x + self.at(3, 1) * other.y + self.at(3, 2) * other.z + self.at(3, 3) * other.w,
+        )
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
