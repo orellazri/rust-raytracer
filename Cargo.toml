@@ -15,3 +15,7 @@ rand = "0.8.4"
 [[bench]]
 name = "ppm_benchmark"
 harness = false
+
+[[bench]]
+name = "sphere_benchmark"
+harness = false

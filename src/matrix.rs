@@ -15,6 +15,13 @@ impl Matrix {
         Matrix { dim, elems: elems.to_vec() }
     }
 
+    pub fn identity() -> Self {
+        Matrix {
+            dim: 4,
+            elems: vec![1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0],
+        }
+    }
+
     pub fn at(&self, row: usize, col: usize) -> F {
         self.elems[row * self.dim + col]
     }
@@ -122,6 +129,19 @@ impl ops::Mul for Matrix {
 }
 
 impl ops::Mul<Tuple> for Matrix {
+    type Output = Tuple;
+
+    fn mul(self, other: Tuple) -> Tuple {
+        Tuple::new(
+            self.at(0, 0) * other.x + self.at(0, 1) * other.y + self.at(0, 2) * other.z + self.at(0, 3) * other.w,
+            self.at(1, 0) * other.x + self.at(1, 1) * other.y + self.at(1, 2) * other.z + self.at(1, 3) * other.w,
+            self.at(2, 0) * other.x + self.at(2, 1) * other.y + self.at(2, 2) * other.z + self.at(2, 3) * other.w,
+            self.at(3, 0) * other.x + self.at(3, 1) * other.y + self.at(3, 2) * other.z + self.at(3, 3) * other.w,
+        )
+    }
+}
+
+impl ops::Mul<Tuple> for &Matrix {
     type Output = Tuple;
 
     fn mul(self, other: Tuple) -> Tuple {

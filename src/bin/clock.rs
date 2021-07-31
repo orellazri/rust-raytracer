@@ -4,7 +4,7 @@ use std::f64::consts::PI;
 use std::fs::File;
 use std::io::Write;
 
-use raytracer::{canvas::*, color::*, transform::*, tuple::*};
+use raytracer::{canvas::*, color::*, transformation::*, tuple::*};
 
 fn point_to_canvas(canvas: &Canvas, point: &Tuple) -> (usize, usize) {
     let w = canvas.width as f64 / 2.0;
@@ -24,7 +24,7 @@ fn main() {
     canvas.write_pixel(x, y, color);
 
     for i in 1..12 {
-        let transform = rotate_y(i as f64 * PI / 6.0);
+        let transform = rotation_y(i as f64 * PI / 6.0);
         clock = transform * clock;
         let (x, y) = point_to_canvas(&canvas, &clock);
         canvas.write_pixel(x, y, color);
