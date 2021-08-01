@@ -64,6 +64,7 @@ mod tests {
         let i2 = Intersection::new(2.0, &s);
         let xs = intersections(&[i1, i2]);
         let i = hit(&xs);
+        
         assert_eq!(i, Some(&i1));
     }
 
@@ -74,6 +75,7 @@ mod tests {
         let i2 = Intersection::new(1.0, &s);
         let xs = intersections(&[i1, i2]);
         let i = hit(&xs);
+        
         assert_eq!(i, Some(&i2));
     }
 
@@ -84,6 +86,7 @@ mod tests {
         let i2 = Intersection::new(-1.0, &s);
         let xs = intersections(&[i1, i2]);
         let i = hit(&xs);
+        
         assert_eq!(i, None);
     }
 
@@ -96,6 +99,7 @@ mod tests {
         let i4 = Intersection::new(2.0, &s);
         let xs = intersections(&[i1, i2, i3, i4]);
         let i = hit(&xs);
+        
         assert_eq!(i, Some(&i4));
     }
 }
