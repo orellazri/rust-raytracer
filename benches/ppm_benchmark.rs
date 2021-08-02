@@ -11,10 +11,11 @@ fn criterion_benchmark(c: &mut Criterion) {
     let r: f64 = rng.gen_range(0..101) as f64 / 100.0;
     let g: f64 = rng.gen_range(0..101) as f64 / 100.0;
     let b: f64 = rng.gen_range(0..101) as f64 / 100.0;
+    let color = Color::new(r, g, b);
 
     for y in 0..canvas.height {
         for x in 0..canvas.width {
-            canvas.write_pixel(x, y, Color::new(r, g, b));
+            canvas.write_pixel(x, y, &color);
         }
     }
 

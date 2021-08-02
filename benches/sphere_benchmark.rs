@@ -27,7 +27,7 @@ fn criterion_benchmark(c: &mut Criterion) {
             let xs = sphere.intersect(&r);
 
             if let Some(_hit) = intersection::hit(&xs) {
-                canvas.write_pixel(x, y, red);
+                canvas.write_pixel(x, y, &red);
             }
         }
     }
