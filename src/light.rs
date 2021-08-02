@@ -21,6 +21,7 @@ mod tests {
         let position = Tuple::point(0.0, 0.0, 0.0);
         let intensity = Color::new(1.0, 1.0, 1.0);
         let light = Light::new(position, intensity);
+
         assert_eq!(light.position, position);
         assert_eq!(light.intensity, intensity);
     }

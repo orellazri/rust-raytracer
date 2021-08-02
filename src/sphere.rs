@@ -209,6 +209,7 @@ mod tests {
     #[test]
     fn sphere_has_default_material() {
         let s = Sphere::new();
+
         assert_eq!(s.material, Material::new());
     }
 
@@ -218,6 +219,7 @@ mod tests {
         let mut m = Material::new();
         m.ambient = 1.0;
         s.material = m;
+
         assert_eq!(s.material, m);
     }
 }

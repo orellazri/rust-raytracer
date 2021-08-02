@@ -50,6 +50,7 @@ mod tests {
     #[test]
     fn default_material() {
         let m = Material::new();
+
         assert_eq!(m.color, Color::new(1.0, 1.0, 1.0));
         assert!(floats_equal(m.ambient, 0.1));
         assert!(floats_equal(m.diffuse, 0.9));
@@ -63,6 +64,7 @@ mod tests {
         m1.shininess = 50.0;
         let mut m2 = Material::new();
         m2.shininess = 50.0;
+
         assert_eq!(m1, m2);
     }
 
@@ -72,6 +74,7 @@ mod tests {
         m1.shininess = 50.0;
         let mut m2 = Material::new();
         m2.color = Color::new(0.8, 0.8, 0.8);
+
         assert_ne!(m1, m2);
     }
 }
