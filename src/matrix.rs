@@ -2,16 +2,15 @@ use std::ops;
 
 use crate::tuple::Tuple;
 use crate::utils::floats_equal;
-use crate::F;
 
 #[derive(Debug)]
 pub struct Matrix {
     pub dim: usize,
-    pub elems: Vec<F>,
+    pub elems: Vec<f64>,
 }
 
 impl Matrix {
-    pub fn new(dim: usize, elems: &[F]) -> Self {
+    pub fn new(dim: usize, elems: &[f64]) -> Self {
         Matrix { dim, elems: elems.to_vec() }
     }
 
@@ -22,12 +21,12 @@ impl Matrix {
         }
     }
 
-    pub fn at(&self, row: usize, col: usize) -> F {
+    pub fn at(&self, row: usize, col: usize) -> f64 {
         self.elems[row * self.dim + col]
     }
 
     pub fn transpose(&self) -> Self {
-        let mut elems: Vec<F> = Vec::with_capacity(self.dim.pow(2));
+        let mut elems: Vec<f64> = Vec::with_capacity(self.dim.pow(2));
 
         for row in 0..self.dim {
             for col in 0..self.dim {
@@ -38,7 +37,7 @@ impl Matrix {
         Matrix::new(self.dim, &elems)
     }
 
-    pub fn det(&self) -> F {
+    pub fn det(&self) -> f64 {
         if self.dim == 2 {
             self.at(0, 0) * self.at(1, 1) - self.at(0, 1) * self.at(1, 0)
         } else {
@@ -47,7 +46,7 @@ impl Matrix {
     }
 
     pub fn submatrix(&self, row: usize, col: usize) -> Self {
-        let mut elems: Vec<F> = Vec::with_capacity((self.dim - 1) * (self.dim - 1));
+        let mut elems: Vec<f64> = Vec::with_capacity((self.dim - 1) * (self.dim - 1));
 
         for xrow in 0..self.dim {
             for xcol in 0..self.dim {
@@ -60,11 +59,11 @@ impl Matrix {
         Matrix::new(self.dim - 1, &elems)
     }
 
-    pub fn minor(&self, row: usize, col: usize) -> F {
+    pub fn minor(&self, row: usize, col: usize) -> f64 {
         self.submatrix(row, col).det()
     }
 
-    pub fn cofactor(&self, row: usize, col: usize) -> F {
+    pub fn cofactor(&self, row: usize, col: usize) -> f64 {
         if (row + col) % 2 == 0 {
             return self.minor(row, col);
         }
@@ -79,7 +78,7 @@ impl Matrix {
     pub fn inverse(&self) -> Self {
         assert!(self.invertible());
 
-        let mut v: Vec<F> = Vec::with_capacity(self.dim.pow(2));
+        let mut v: Vec<f64> = Vec::with_capacity(self.dim.pow(2));
         let det = self.det();
 
         for row in 0..self.dim {
@@ -114,7 +113,7 @@ impl ops::Mul for Matrix {
     fn mul(self, other: Matrix) -> Matrix {
         assert!(self.dim == other.dim);
 
-        let mut v: Vec<F> = vec![0.0; self.dim.pow(2)];
+        let mut v: Vec<f64> = vec![0.0; self.dim.pow(2)];
 
         for row in 0..self.dim {
             for col in 0..self.dim {

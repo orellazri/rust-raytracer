@@ -54,7 +54,6 @@ mod tests {
     use crate::{
         transformation::{rotation_z, scaling, translation},
         utils::floats_equal,
-        F,
     };
 
     #[test]
@@ -175,15 +174,15 @@ mod tests {
     #[test]
     fn normal_on_sphere_at_nonaxial_point() {
         let s = Sphere::new();
-        let n = s.normal_at(&Tuple::point(F::sqrt(3.0) / 3.0, F::sqrt(3.0) / 3.0, F::sqrt(3.0) / 3.0));
+        let n = s.normal_at(&Tuple::point(f64::sqrt(3.0) / 3.0, f64::sqrt(3.0) / 3.0, f64::sqrt(3.0) / 3.0));
 
-        assert_eq!(n, Tuple::vector(F::sqrt(3.0) / 3.0, F::sqrt(3.0) / 3.0, F::sqrt(3.0) / 3.0));
+        assert_eq!(n, Tuple::vector(f64::sqrt(3.0) / 3.0, f64::sqrt(3.0) / 3.0, f64::sqrt(3.0) / 3.0));
     }
 
     #[test]
     fn normal_is_a_normalized_vector() {
         let s = Sphere::new();
-        let n = s.normal_at(&Tuple::point(F::sqrt(3.0) / 3.0, F::sqrt(3.0) / 3.0, F::sqrt(3.0) / 3.0));
+        let n = s.normal_at(&Tuple::point(f64::sqrt(3.0) / 3.0, f64::sqrt(3.0) / 3.0, f64::sqrt(3.0) / 3.0));
 
         assert_eq!(n, n.normalized());
     }

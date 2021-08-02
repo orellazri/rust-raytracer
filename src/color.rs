@@ -1,17 +1,16 @@
-use crate::F;
 use std::ops;
 
 use crate::utils::floats_equal;
 
 #[derive(Debug, Copy, Clone)]
 pub struct Color {
-    pub r: F,
-    pub g: F,
-    pub b: F,
+    pub r: f64,
+    pub g: f64,
+    pub b: f64,
 }
 
 impl Color {
-    pub fn new(r: F, g: F, b: F) -> Self {
+    pub fn new(r: f64, g: f64, b: f64) -> Self {
         Color { r, g, b }
     }
 
@@ -66,10 +65,10 @@ impl ops::Sub for Color {
     }
 }
 
-impl ops::Mul<F> for Color {
+impl ops::Mul<f64> for Color {
     type Output = Color;
 
-    fn mul(self, other: F) -> Color {
+    fn mul(self, other: f64) -> Color {
         Color::new(self.r * other, self.g * other, self.b * other)
     }
 }

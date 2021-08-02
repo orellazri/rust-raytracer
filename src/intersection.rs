@@ -1,16 +1,15 @@
 use std::cmp::Ordering;
 
 use crate::sphere::Sphere;
-use crate::F;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Intersection<'a> {
-    pub t: F,
+    pub t: f64,
     pub object: &'a Sphere,
 }
 
 impl<'a> Intersection<'a> {
-    pub fn new(t: F, object: &'a Sphere) -> Intersection<'a> {
+    pub fn new(t: f64, object: &'a Sphere) -> Intersection<'a> {
         Intersection { t, object }
     }
 }
@@ -64,7 +63,7 @@ mod tests {
         let i2 = Intersection::new(2.0, &s);
         let xs = intersections(&[i1, i2]);
         let i = hit(&xs);
-        
+
         assert_eq!(i, Some(&i1));
     }
 
@@ -75,7 +74,7 @@ mod tests {
         let i2 = Intersection::new(1.0, &s);
         let xs = intersections(&[i1, i2]);
         let i = hit(&xs);
-        
+
         assert_eq!(i, Some(&i2));
     }
 
@@ -86,7 +85,7 @@ mod tests {
         let i2 = Intersection::new(-1.0, &s);
         let xs = intersections(&[i1, i2]);
         let i = hit(&xs);
-        
+
         assert_eq!(i, None);
     }
 
@@ -99,7 +98,7 @@ mod tests {
         let i4 = Intersection::new(2.0, &s);
         let xs = intersections(&[i1, i2, i3, i4]);
         let i = hit(&xs);
-        
+
         assert_eq!(i, Some(&i4));
     }
 }

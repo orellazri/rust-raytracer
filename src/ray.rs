@@ -1,6 +1,5 @@
 use crate::matrix::Matrix;
 use crate::tuple::Tuple;
-use crate::F;
 
 #[derive(Debug)]
 pub struct Ray {
@@ -13,7 +12,7 @@ impl Ray {
         Ray { origin, direction }
     }
 
-    pub fn position(&self, t: F) -> Tuple {
+    pub fn position(&self, t: f64) -> Tuple {
         self.origin + self.direction * t
     }
 

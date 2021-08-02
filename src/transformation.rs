@@ -1,8 +1,6 @@
 use crate::matrix::Matrix;
 
-use crate::F;
-
-pub fn translation(x: F, y: F, z: F) -> Matrix {
+pub fn translation(x: f64, y: f64, z: f64) -> Matrix {
     #[rustfmt::skip]
     let v = vec![
         1.0, 0.0, 0.0, x,
@@ -14,7 +12,7 @@ pub fn translation(x: F, y: F, z: F) -> Matrix {
     Matrix::new(4, &v)
 }
 
-pub fn scaling(x: F, y: F, z: F) -> Matrix {
+pub fn scaling(x: f64, y: f64, z: f64) -> Matrix {
     #[rustfmt::skip]
     let v = vec![
         x,   0.0, 0.0, 0.0,
@@ -26,7 +24,7 @@ pub fn scaling(x: F, y: F, z: F) -> Matrix {
     Matrix::new(4, &v)
 }
 
-pub fn rotation_x(r: F) -> Matrix {
+pub fn rotation_x(r: f64) -> Matrix {
     #[rustfmt::skip]
     let v = vec![
         1.0, 0.0, 0.0, 0.0,
@@ -38,7 +36,7 @@ pub fn rotation_x(r: F) -> Matrix {
     Matrix::new(4, &v)
 }
 
-pub fn rotation_y(r: F) -> Matrix {
+pub fn rotation_y(r: f64) -> Matrix {
     #[rustfmt::skip]
     let v = vec![
         r.cos(), 0.0, r.sin(), 0.0,
@@ -50,7 +48,7 @@ pub fn rotation_y(r: F) -> Matrix {
     Matrix::new(4, &v)
 }
 
-pub fn rotation_z(r: F) -> Matrix {
+pub fn rotation_z(r: f64) -> Matrix {
     #[rustfmt::skip]
     let v = vec![
         r.cos(), -r.sin(), 0.0, 0.0,
@@ -62,7 +60,7 @@ pub fn rotation_z(r: F) -> Matrix {
     Matrix::new(4, &v)
 }
 
-pub fn shearing(xy: F, xz: F, yx: F, yz: F, zx: F, zy: F) -> Matrix {
+pub fn shearing(xy: f64, xz: f64, yx: f64, yz: f64, zx: f64, zy: f64) -> Matrix {
     #[rustfmt::skip]
     let v = vec![
         1.0, xy, xz, 0.0,
