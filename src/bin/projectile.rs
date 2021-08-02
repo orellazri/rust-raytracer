@@ -34,18 +34,14 @@ impl Pixel {
         let ux = rx as usize;
         let uy = ry as usize;
 
-        if rx.is_sign_negative() || ry.is_sign_negative() || ux > canvas.width || uy > canvas.height
-        {
+        if rx.is_sign_negative() || ry.is_sign_negative() || ux > canvas.width || uy > canvas.height {
             return Pixel::OutOfBounds;
         }
 
         let screen_x = ux;
         let screen_y = canvas.height - uy;
 
-        Pixel::Coordinate {
-            x: screen_x,
-            y: screen_y,
-        }
+        Pixel::Coordinate { x: screen_x, y: screen_y }
     }
 }
 
@@ -74,7 +70,7 @@ fn main() {
 
         match Pixel::from_point_for_canvas(proj.position, &canvas) {
             Pixel::Coordinate { x, y } => {
-                canvas.write_pixel(x, y, red);
+                canvas.write_pixel(x, y, &red);
             }
             Pixel::OutOfBounds => {}
         }
@@ -82,6 +78,5 @@ fn main() {
 
     println!("Starting to output ppm...");
     let mut file = File::create("output/projectile.ppm").expect("Unable to create file");
-    file.write_all(&canvas.to_ppm()[..])
-        .expect("Unable to write data to file");
+    file.write_all(&canvas.to_ppm()[..]).expect("Unable to write data to file");
 }

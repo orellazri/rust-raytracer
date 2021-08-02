@@ -21,7 +21,7 @@ impl Canvas {
         self.pixels[y * self.width + x]
     }
 
-    pub fn write_pixel(&mut self, x: usize, y: usize, color: Color) {
+    pub fn write_pixel(&mut self, x: usize, y: usize, color: &Color) {
         // Check bounds before writing (not checking less than 0 because due to type limits)
         if x > self.width || y > self.height {
             return;
@@ -107,7 +107,7 @@ mod tests {
     fn write_pixel() {
         let mut canvas = Canvas::new(10, 20);
         let red = Color::red();
-        canvas.write_pixel(2, 3, red);
+        canvas.write_pixel(2, 3, &red);
 
         assert_eq!(canvas.pixel_at(2, 3), red);
     }
@@ -129,9 +129,9 @@ mod tests {
         let c2 = Color::new(0.0, 0.5, 0.0);
         let c3 = Color::new(-0.5, 0.0, 1.0);
 
-        canvas.write_pixel(0, 0, c1);
-        canvas.write_pixel(2, 1, c2);
-        canvas.write_pixel(4, 2, c3);
+        canvas.write_pixel(0, 0, &c1);
+        canvas.write_pixel(2, 1, &c2);
+        canvas.write_pixel(4, 2, &c3);
 
         let ppm = canvas.to_ppm();
         let expected_result =
@@ -147,7 +147,7 @@ mod tests {
 
         for y in 0..canvas.height {
             for x in 0..canvas.width {
-                canvas.write_pixel(x, y, color);
+                canvas.write_pixel(x, y, &color);
             }
         }
 

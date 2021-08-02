@@ -11,11 +11,15 @@ use raytracer::{canvas::*, color::*, intersection, light::*, material::*, ray::R
 fn main() {
     let mut sphere = Sphere::new();
     sphere.material = Material::new();
-    sphere.material.color = Color::new(1.0, 0.2, 1.0);
+    sphere.material.color = Color::new(0.13, 0.52, 0.71);
+    sphere.material.ambient = 0.6;
+    sphere.material.shininess = 350.0;
 
     let light = PointLight::new(Tuple::point(-10.0, 10.0, -10.0), Color::white());
 
-    let canvas_pixels = 500;
+    let background_color = Color::new(0.74, 0.93, 1.0);
+
+    let canvas_pixels = 400;
     let ray_origin = Tuple::point(0.0, 0.0, -5.0);
     let wall_size = 7.0;
     let wall_z = 10.0;
@@ -39,14 +43,18 @@ fn main() {
             let ray = Ray::new(ray_origin, (position - ray_origin).normalized());
             let xs = sphere.intersect(&ray);
 
+            let mut canvas = canvas_mutex.lock().unwrap();
+
             if intersection::hit(&xs) != None {
                 let point = ray.position(xs[0].t);
                 let normal = xs[0].object.normal_at(&point);
                 let eye = -ray.direction;
                 let color = xs[0].object.material.lighting(&light, point, eye, normal);
 
-                let mut canvas = canvas_mutex.lock().unwrap();
-                canvas.write_pixel(x, y, color);
+                canvas.write_pixel(x, y, &color);
+            } else {
+                // Background
+                canvas.write_pixel(x, y, &background_color);
             }
 
             progress.inc(1);

@@ -21,13 +21,13 @@ fn main() {
 
     let mut clock = Tuple::point(0.0, 0.0, 3.0 / 4.0);
     let (x, y) = point_to_canvas(&canvas, &clock);
-    canvas.write_pixel(x, y, color);
+    canvas.write_pixel(x, y, &color);
 
     for i in 1..12 {
         let transform = rotation_y(i as f64 * PI / 6.0);
         clock = transform * clock;
         let (x, y) = point_to_canvas(&canvas, &clock);
-        canvas.write_pixel(x, y, color);
+        canvas.write_pixel(x, y, &color);
     }
 
     println!("Starting to output ppm...");
