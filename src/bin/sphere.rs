@@ -6,11 +6,14 @@ use std::{fs::File, sync::Mutex};
 use indicatif::ProgressBar;
 use itertools::Itertools;
 use rayon::prelude::*;
-use raytracer::{canvas::*, color::*, intersection, ray::Ray, sphere::Sphere, tuple::*};
+use raytracer::{canvas::*, color::*, intersection, light::*, material::*, ray::Ray, sphere::Sphere, tuple::*};
 
 fn main() {
-    let red = Color::red();
-    let sphere = Sphere::new();
+    let mut sphere = Sphere::new();
+    sphere.material = Material::new();
+    sphere.material.color = Color::new(1.0, 0.2, 1.0);
+
+    let light = PointLight::new(Tuple::point(-10.0, 10.0, -10.0), Color::white());
 
     let canvas_pixels = 500;
     let ray_origin = Tuple::point(0.0, 0.0, -5.0);
@@ -33,12 +36,17 @@ fn main() {
             let world_x = -half + pixel_size * (x as f64);
             let position = Tuple::point(world_x, world_y, wall_z);
 
-            let r = Ray::new(ray_origin, (position - ray_origin).normalized());
-            let xs = sphere.intersect(&r);
+            let ray = Ray::new(ray_origin, (position - ray_origin).normalized());
+            let xs = sphere.intersect(&ray);
 
             if intersection::hit(&xs) != None {
+                let point = ray.position(xs[0].t);
+                let normal = xs[0].object.normal_at(&point);
+                let eye = -ray.direction;
+                let color = xs[0].object.material.lighting(&light, point, eye, normal);
+
                 let mut canvas = canvas_mutex.lock().unwrap();
-                canvas.write_pixel(x, y, red);
+                canvas.write_pixel(x, y, color);
             }
 
             progress.inc(1);

@@ -30,7 +30,7 @@ impl Material {
         }
     }
 
-    pub fn lighting(&self, light: PointLight, point: Tuple, eye: Tuple, normal: Tuple) -> Color {
+    pub fn lighting(&self, light: &PointLight, point: Tuple, eye: Tuple, normal: Tuple) -> Color {
         let effective_color = self.color * light.intensity;
         let lightv = (light.position - point).normalized();
         let ambient = effective_color * self.ambient;
@@ -115,7 +115,7 @@ mod tests {
         let eye = Tuple::vector(0.0, 0.0, -1.0);
         let normal = Tuple::vector(0.0, 0.0, -1.0);
         let light = PointLight::new(Tuple::point(0.0, 0.0, -10.0), Color::white());
-        let result = m.lighting(light, position, eye, normal);
+        let result = m.lighting(&light, position, eye, normal);
 
         assert_eq!(result, Color::new(1.9, 1.9, 1.9));
     }
@@ -127,7 +127,7 @@ mod tests {
         let eye = Tuple::vector(0.0, SQRT_2 / 2.0, -SQRT_2 / 2.0);
         let normal = Tuple::vector(0.0, 0.0, -1.0);
         let light = PointLight::new(Tuple::point(0.0, 0.0, -10.0), Color::white());
-        let result = m.lighting(light, position, eye, normal);
+        let result = m.lighting(&light, position, eye, normal);
 
         assert_eq!(result, Color::white());
     }
@@ -139,7 +139,7 @@ mod tests {
         let eye = Tuple::vector(0.0, 0.0, -1.0);
         let normal = Tuple::vector(0.0, 0.0, -1.0);
         let light = PointLight::new(Tuple::point(0.0, 10.0, -10.0), Color::white());
-        let result = m.lighting(light, position, eye, normal);
+        let result = m.lighting(&light, position, eye, normal);
 
         assert_eq!(result, Color::new(0.7364, 0.7364, 0.7364));
     }
@@ -151,7 +151,7 @@ mod tests {
         let eye = Tuple::vector(0.0, -SQRT_2 / 2.0, -SQRT_2 / 2.0);
         let normal = Tuple::vector(0.0, 0.0, -1.0);
         let light = PointLight::new(Tuple::point(0.0, 10.0, -10.0), Color::white());
-        let result = m.lighting(light, position, eye, normal);
+        let result = m.lighting(&light, position, eye, normal);
 
         assert_eq!(result, Color::new(1.6364, 1.6364, 1.6364));
     }
@@ -163,7 +163,7 @@ mod tests {
         let eye = Tuple::vector(0.0, 0.0, -1.0);
         let normal = Tuple::vector(0.0, 0.0, -1.0);
         let light = PointLight::new(Tuple::point(0.0, 0.0, 10.0), Color::white());
-        let result = m.lighting(light, position, eye, normal);
+        let result = m.lighting(&light, position, eye, normal);
 
         assert_eq!(result, Color::new(0.1, 0.1, 0.1));
     }
