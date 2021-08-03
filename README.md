@@ -12,6 +12,9 @@ Binaries use rayon for data parallelism and bencharks use Criterion.
 
 The binaries output a ppm file to an "output" directory which you need to make.
 
+## Test
+`cargo test`
+
 ## Benchmark
 
 `cargo bench X` where X is the benchmark you wish to run.
