@@ -59,6 +59,12 @@ impl Material {
     }
 }
 
+impl Default for Material {
+    fn default() -> Self {
+        Material::new()
+    }
+}
+
 impl PartialEq for Material {
     fn eq(&self, other: &Self) -> bool {
         floats_equal(self.ambient, other.ambient)
