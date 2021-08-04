@@ -74,9 +74,8 @@ impl Default for World {
 
 #[cfg(test)]
 mod tests {
-    use crate::utils::floats_equal;
-
     use super::*;
+    use crate::utils::floats_equal;
 
     #[test]
     fn create_world() {
