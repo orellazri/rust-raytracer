@@ -9,3 +9,4 @@ pub mod sphere;
 pub mod transformation;
 pub mod tuple;
 mod utils;
+pub mod world;

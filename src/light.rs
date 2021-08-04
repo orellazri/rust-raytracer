@@ -12,6 +12,12 @@ impl PointLight {
     }
 }
 
+impl PartialEq for PointLight {
+    fn eq(&self, other: &Self) -> bool {
+        self.position == other.position && self.intensity == other.intensity
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -1,6 +1,6 @@
 use std::cmp::Ordering;
 
-use crate::sphere::Sphere;
+use crate::{ray::Ray, sphere::Sphere, tuple::Tuple};
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Intersection<'a> {
@@ -8,9 +8,27 @@ pub struct Intersection<'a> {
     pub object: &'a Sphere,
 }
 
+pub struct Computations<'a> {
+    pub t: f64,
+    pub object: &'a Sphere,
+    pub point: Tuple,
+    pub eyev: Tuple,
+    pub normalv: Tuple,
+}
+
 impl<'a> Intersection<'a> {
     pub fn new(t: f64, object: &'a Sphere) -> Intersection<'a> {
         Intersection { t, object }
+    }
+
+    pub fn prepare_computations(&self, ray: &Ray) -> Computations {
+        Computations {
+            t: self.t,
+            object: self.object,
+            point: ray.position(self.t),
+            eyev: -ray.direction,
+            normalv: self.object.normal_at(&ray.position(self.t)),
+        }
     }
 }
 
