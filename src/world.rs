@@ -1,4 +1,12 @@
-use crate::{color::Color, intersection::Intersection, light::PointLight, ray::Ray, sphere::Sphere, transformation, tuple::Tuple};
+use crate::{
+    color::Color,
+    intersection::{hit, Computations, Intersection},
+    light::PointLight,
+    ray::Ray,
+    sphere::Sphere,
+    transformation,
+    tuple::Tuple,
+};
 
 #[derive(Debug)]
 pub struct World {
@@ -41,6 +49,20 @@ impl World {
         intersections.sort_by(|a, b| a.t.partial_cmp(&b.t).unwrap());
 
         intersections
+    }
+
+    pub fn shade_hit(&self, comps: Computations) -> Color {
+        comps
+            .object
+            .material
+            .lighting(self.light.unwrap(), comps.point, comps.eyev, comps.normalv)
+    }
+
+    pub fn color_at(&self, ray: &Ray) -> Color {
+        match hit(&self.intersect(ray)) {
+            Some(xs) => self.shade_hit(xs.prepare_computations(ray)),
+            None => Color::black(),
+        }
     }
 }
 
@@ -97,16 +119,59 @@ mod tests {
     }
 
     #[test]
-    fn precomputating_the_state_of_an_intersection() {
+    fn shading_an_intersection() {
+        let w = World::default();
         let r = Ray::new(Tuple::point(0.0, 0.0, -5.0), Tuple::vector(0.0, 0.0, 1.0));
-        let shape = Sphere::new();
-        let i = Intersection::new(4.0, &shape);
+        let shape = &w.objects[0];
+        let i = Intersection::new(4.0, shape);
         let comps = i.prepare_computations(&r);
+        let c = w.shade_hit(comps);
 
-        assert!(floats_equal(comps.t, i.t));
-        assert_eq!(comps.object, i.object);
-        assert_eq!(comps.point, Tuple::point(0.0, 0.0, -1.0));
-        assert_eq!(comps.eyev, Tuple::vector(0.0, 0.0, -1.0));
-        assert_eq!(comps.normalv, Tuple::vector(0.0, 0.0, -1.0));
+        assert_eq!(c, Color::new(0.38066, 0.47583, 0.2855));
+    }
+
+    #[test]
+    fn shading_an_intersection_from_the_inside() {
+        let mut w = World::default();
+        w.light = Some(PointLight::new(Tuple::point(0.0, 0.25, 0.0), Color::new(1.0, 1.0, 1.0)));
+        let r = Ray::new(Tuple::point(0.0, 0.0, 0.0), Tuple::vector(0.0, 0.0, 1.0));
+        let shape = &w.objects[1];
+        let i = Intersection::new(0.5, shape);
+        let comps = i.prepare_computations(&r);
+        let c = w.shade_hit(comps);
+
+        assert_eq!(c, Color::new(0.90498, 0.90498, 0.90498));
+    }
+
+    #[test]
+    fn color_when_ray_misses() {
+        let w = World::default();
+        let r = Ray::new(Tuple::point(0.0, 0.0, -5.0), Tuple::vector(0.0, 1.0, 0.0));
+        let c = w.color_at(&r);
+
+        assert_eq!(c, Color::new(0.0, 0.0, 0.0));
+    }
+
+    #[test]
+    fn color_when_ray_hits() {
+        let w = World::default();
+        let r = Ray::new(Tuple::point(0.0, 0.0, -5.0), Tuple::vector(0.0, 0.0, 1.0));
+        let c = w.color_at(&r);
+
+        assert_eq!(c, Color::new(0.38066, 0.47583, 0.2855));
+    }
+
+    #[test]
+    fn color_when_an_intersection_behind_the_ray() {
+        let mut w = World::default();
+        let expected_result = w.objects[1].material.color;
+        let mut outer = &mut w.objects[0];
+        outer.material.ambient = 1.0;
+        let mut inner = &mut w.objects[1];
+        inner.material.ambient = 1.0;
+        let r = Ray::new(Tuple::point(0.0, 0.0, 0.75), Tuple::vector(0.0, 0.0, -1.0));
+        let c = w.color_at(&r);
+
+        assert_eq!(c, expected_result);
     }
 }

@@ -49,7 +49,7 @@ fn main() {
                 let point = ray.position(xs[0].t);
                 let normal = xs[0].object.normal_at(&point);
                 let eye = -ray.direction;
-                let color = xs[0].object.material.lighting(&light, point, eye, normal);
+                let color = xs[0].object.material.lighting(light, point, eye, normal);
 
                 canvas.write_pixel(x, y, &color);
             } else {
