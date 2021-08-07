@@ -2,9 +2,9 @@
 
 💡 A **WIP** test-driven raytracer built in Rust.
 
-Binaries use rayon for data parallelism and bencharks use Criterion.
+Uses rayon for data parallelism and Criterion for benchmarking.
 
-![Demo](demo1.png)
+![Demo](demo.png)
 
 ## Run
 
@@ -13,6 +13,7 @@ Binaries use rayon for data parallelism and bencharks use Criterion.
 The binaries output a ppm file to an "output" directory which you need to make.
 
 ## Test
+
 `cargo test`
 
 ## Benchmark
