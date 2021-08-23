@@ -1,6 +1,6 @@
 # Rust Raytracer
 
-💡 A **WIP** test-driven raytracer built in Rust.
+💡 A test-driven raytracer built in Rust.
 
 Uses rayon for data parallelism and Criterion for benchmarking.
 
