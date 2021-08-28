@@ -10,7 +10,7 @@ Uses rayon for data parallelism and Criterion for benchmarking.
 
 `cargo run --release --bin X` where X is the binary you wish to run.
 
-The binaries output a ppm file to an "output" directory which you need to creaet.
+The binaries output a ppm file to an "output" directory which you need to create.
 
 ## Test
 
