@@ -19,7 +19,3 @@ The binaries output a ppm file to an "output" directory which you need to create
 ## Benchmark
 
 `cargo bench X` where X is the benchmark you wish to run.
-
----
-
-_Based on the book "The Ray Tracer Challenge"._
